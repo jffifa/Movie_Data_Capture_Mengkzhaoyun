@@ -547,20 +547,6 @@ def main(args: tuple) -> Path:
                     ) if not single_file_path else ('-', 'Single File', '', '', ''))
           )
 
-    # Mapping table no longer exist, thus simply copy ones in the repo directory if not exist
-    def fmd(f) -> typing.Tuple[str, Path]:
-        return (os.path.join(os.path.abspath(os.path.dirname(__file__)), "MappingTable", f),
-                Path.home() / '.local' / 'share' / 'mdc' / f)
-
-    map_tab = (fmd('mapping_actor.xml'), fmd('mapping_info.xml'), fmd('c_number.json'))
-    os.makedirs(Path.home() / '.local' / 'share' / 'mdc', exist_ok=True)
-    for k, v in map_tab:
-        if not v.exists():
-            shutil.copyfile(k, v)
-            print(f"Mapping table initialized to: {v}")
-        else:
-            print(f"Mapping table already exists: {v}")
-
     create_failed_folder(conf.failed_folder())
 
     # create OpenCC converter
