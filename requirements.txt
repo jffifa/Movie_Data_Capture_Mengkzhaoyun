@@ -1,5 +1,4 @@
---index-url https://pypi.tuna.tsinghua.edu.cn/simple
-
+setuptools
 requests
 dlib-bin
 Click
@@ -11,7 +10,8 @@ pillow==9.5.0
 cloudscraper
 curl_cffi
 pysocks==1.7.1
-urllib3==1.25.11
+urllib3>=1.26
 certifi
 MechanicalSoup
 opencc-python-reimplemented
+DrissionPage
