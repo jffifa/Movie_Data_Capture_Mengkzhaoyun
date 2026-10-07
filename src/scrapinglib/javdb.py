@@ -18,7 +18,7 @@ class Javdb(Parser):
     expr_runtime2 = '//strong[contains(text(),"時長")]/../span/a/text()'
     expr_uncensored = '//strong[contains(text(),"類別")]/../span/a[contains(@href,"/tags/uncensored?") or contains(@href,"/tags/western?")]'
     expr_actor = '//span[@class="value"]/a[contains(@href,"/actors/")]/text()'
-    expr_actor2 = '//span[@class="value"]/a[contains(@href,"/actors/")]/../strong/@class'
+    expr_actor2 = '//span[@class="value"]/a[contains(@href,"/actors/")]/@class'
     expr_release = '//strong[contains(text(),"日期")]/../span/text()'
     expr_release_no = '//*[contains(@class,"movie-list")]/div/a/div[contains(@class, "meta")]/text()'
     expr_studio = '//strong[contains(text(),"片商")]/../span/a/text()'
@@ -188,19 +188,17 @@ class Javdb(Parser):
         actors = self.getTreeAll(htmltree, self.expr_actor)
         genders = self.getTreeAll(htmltree, self.expr_actor2)
         r = []
-        idx = 0
-        # NOTE only female, we dont care others
-        actor_gendor = 'female'
-        for act in actors:
-            if((actor_gendor == 'all')
-            or (actor_gendor == 'both' and genders[idx] in ['symbol female', 'symbol male'])
-            or (actor_gendor == 'female' and genders[idx] == 'symbol female')
-            or (actor_gendor == 'male' and genders[idx] == 'symbol male')):
-                r.append(act)
-            idx = idx + 1
+
+        for idx, actor in enumerate(actors):
+            gender = genders[idx] if idx < len(genders) else ''
+
+            if gender == 'actor-female':
+                r.append(actor)
+
         if re.match(r'FC2-[\d]+', self.number, re.A) and not r:
             r = '素人'
             self.fixstudio = True
+
         return r
 
     def getOutline(self, htmltree):
